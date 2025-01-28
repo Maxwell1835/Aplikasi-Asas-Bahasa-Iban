@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terjemahan Bahasa Melayu ke Iban</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url(back.jpg);
+            background-size: cover;
+            background-position: center;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            margin-left: -800px;
+        }
+        nav {
+            background-color: transparent;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: right;
+            align-items: right;
+            box-shadow: transparent;
+            font-family: arial black;
+            font-style: bold;
+            margin-top: -530px;
+            margin-left: -930px;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: transparent;
+        }
+        nav a:hover {
+            background-color: #34495e;
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+        }
+        label, button {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+            width: 100%;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            font-size: 18px;
+            color: #2e7d32;
+            display: none;
+        }
+        .audio-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: center;
+        }
+        .audio-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Terjemahan Bahasa Melayu ke Iban</h1>
+
+    <label for="malayInput">Masukkan Kata atau Frasa dalam Bahasa Melayu:</label>
+    <input type="text" id="malayInput" >
+
+    <button onclick="translateText()" style="background-color: #2196F3; color: white;">Terjemahkan</button>
+
+    <div id="result" class="output">
+        <p><strong>Terjemahan Iban:</strong> <span id="ibanTranslation"></span></p>
+        <button id="audioButton" class="audio-btn" onclick="playAudio()">Dengar Terjemahan</button>
+    </div>
+</div>
+
+<script>
+    // Fungsi untuk melakukan terjemahan (contoh sederhana)
+    function translateText() {
+        const malayText = document.getElementById("malayInput").value;
+        let ibanTranslation = "";
+        let audioSrc = "";
+
+        // Peta terjemahan Melayu ke Iban (contoh sederhana)
+        const dictionary = {
+            "tahu": { translation: "nemu", audio: "audio/iban_example_1.mp3"},
+            "sudah": { translation: "udah", audio: "audio/iban_example_2.mp3" },
+            "sekarang": { translation: "diatu", audio: "audio/iban_example_3.mp3" },
+            "tidak": { translation: "enda", audio: "audio/iban_example_4.mp3" },
+            "bagus": { translation: "manah", audio: "audio/iban_example_4.mp3" },
+            "berjalan": { translation: "berjalai", audio: "audio/iban_example_4.mp3" },
+            "ada": { translation: "bisi", audio: "audio/iban_example_4.mp3" },
+            "minum": { translation: "ngirup", audio: "audio/iban_example_4.mp3" },
+            "pulang": { translation: "pulai", audio: "audio/iban_example_4.mp3" },
+            "bukan": { translation: "ukai", audio: "audio/iban_example_4.mp3" }
+        };
+
+        // Menentukan terjemahan dan audio yang sesuai
+        if (dictionary[malayText]) {
+            ibanTranslation = dictionary[malayText].translation;
+            audioSrc = dictionary[malayText]. audio;
+
+        } else {
+            ibanTranslation = "Terjemahan tidak ditemui!";
+            audioSrc = "";
+        }
+
+        // Menampilkan hasil terjemahan dan menambahkan audio
+        document.getElementById("ibanTranslation").innerText = ibanTranslation;
+        document.getElementById("audioButton").setAttribute('onclick', playAudio('${audioSrc}'));
+        document.getElementById("result").style.display = "block";
+    }
+
+    // Fungsi untuk memainkan audio terjemahan
+    function playAudio(audioSrc) {
+        if (audioSrc === "") {
+            alert("Tiada audio untuk terjemahan ini.");
+            return;
+        }
+
+        const audio = new Audio(audioSrc);
+        audio.play();
+    }
+</script>
+<body>
+    <nav>
+        <a href="index.html">Menu</a>
+    </nav>
+</body>
+</html>

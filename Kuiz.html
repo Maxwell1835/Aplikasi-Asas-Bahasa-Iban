@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuiz Harian</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            background-image: url(back.jpg);
+            background-size: cover;
+            background-position: center;
+        }
+        nav {
+            background-color: transparent;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            box-shadow: transparent;
+            font-family: arial black;
+            font-style: bold;
+            margin-left: 45px;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: transparent;
+        }
+        nav a:hover {
+            background-color: #34495e;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .question p {
+            font-size: 18px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+        .options li {
+            margin: 10px 0;
+        }
+        button {
+            background-color: #16a085;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #1abc9c;
+        }
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .celebration {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .celebration img {
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Menu</a>
+    </nav>
+    <div class="container">
+        <h1>Kuiz Harian</h1>
+        <div id="quiz-container">
+            <div class="question">
+                <p id="question-text">Soalan akan muncul di sini</p>
+                <ul class="options">
+                    <li><button class="option" onclick="checkAnswer(0)">Pilihan 1</button></li>
+                    <li><button class="option" onclick="checkAnswer(1)">Pilihan 2</button></li>
+                    <li><button class="option" onclick="checkAnswer(2)">Pilihan 3</button></li>
+                </ul>
+            </div>
+            <button id="next-button" onclick="nextQuestion()" style="display: none;">Soalan Seterusnya</button>
+        </div>
+        <div class="result" id="result"></div>
+        <div class="celebration" id="celebration">
+            <h2>Selamat! Anda Hebat!</h2>
+            <img src="https://via.placeholder.com/200" alt="Perayaan">
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { question: "1. Nyatakan kata ganti nama orang pertama (kesatu) yang digunakan untuk merujuk kepada lebih daripada seorang.", options: ["a) aku", "b) kitai", "c) nuan"], answer: 1 },
+            { question: "2. Apakah kata ganti nama orang kedua yang digunakan dalam situasi yang lebih formal?", options: ["a) dik", "b) kita", "c) nuan"], answer: 2 },
+            { question: "3. Pilih kata ganti nama kepunyaan (pengempu) yang betul dalam ayat berikut:Buku tu ukai ______. (milik saya)", options: ["a) engkami", "b) engku", "c) engkita"], answer: 1},
+            { question: "4. Pilih kata ganti nama tunjuk yang sesuai untuk merujuk sesuatu yang dekat dan boleh disentuh.", options: ["a) nya", "b) nyin", "c) tu"], answer: 2 },
+            { question: "5. Apakah kata ganti nama tunjuk yang digunakan untuk merujuk sesuatu yang jauh dari penutur?", options: ["a) nya", "b) tu", "c) nyin"], answer: 2 },
+            { question: "6. Isi tempat kosong dengan kata ganti nama tunjuk yang betul: ______ buah dabai.(jarak jauh)", options: ["a) nya", "b) nyin", "c) tu"], answer: 1 },
+            { question: "7. Apakah makna 'nama berita' dalam bahasa Melayu?", options: ["a) Apakah nama awak?", "b) Apakah khabar awak?", "c) Dari manakah awak datang?"], answer: 0 },
+            { question: "8. Apakah terjemahan bagi 'Nuan nemu jaku iban?' dalam bahasa Melayu? ", options: ["a) Awak boleh bertutur dalam bahasa Iban?", "b) Di manakah awak belajar bahasa Iban?", "c) Adakah awak berbangsa Iban?"], answer: 0 },
+            { question: "9. Lengkapkan ayat tersebut: Aku ______ nuan sayau ke aku", options: ["a) nemu", "b) diatu", "c) bisi"], answer: 0 },
+            { question: "10. Lengkapkan ayat tersebut: Aram ______ ke Aiman Mall.", options: ["a) pulai", "b) ngirup", "c) bejalai"], answer: 2 }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById("question-text").innerText = question.question;
+            const options = document.querySelectorAll(".option");
+            options.forEach((option, index) => {
+                option.innerText = question.options[index];
+            });
+            document.getElementById("next-button").style.display = "none";
+        }
+
+        function checkAnswer(selectedIndex) {
+            const question = questions[currentQuestion];
+            const isCorrect = selectedIndex === question.answer;
+
+            if (isCorrect) {
+                score++;
+                alert("Betul!");
+            } else {
+                alert("Salah! Cuba lagi");
+            }
+            document.getElementById("next-button").style.display = "inline-block";
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById("quiz-container").style.display = "none";
+            const resultText = Markah = $(score) / $(questions.length);
+            document.getElementById("result").innerText = resultText;
+
+            if (score === questions.length) {
+                document.getElementById("celebration").style.display = "block";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
